@@ -1,9 +1,0 @@
-{
-  "name":"Uhuru Digital Solution Contact Base",
-  "short_name":"Uhuru Contact Base",
-  "start_url":"./",
-  "display":"standalone",
-  "background_color":"#050509",
-  "theme_color":"#050509",
-  "description":"Offline-first contact management base for Uhuru Digital Solution."
-}
