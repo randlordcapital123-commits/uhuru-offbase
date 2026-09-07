@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#050509">
+<link rel="manifest" href="manifest.json">
+<link rel="stylesheet" href="style.css">
+<title>Uhuru Digital Solution Contact Base</title>
+</head>
+<body>
+<div class="scanlines"></div>
+<header>
+  <div class="brand">
+    <div class="logo">UDS</div>
+    <div><h1>UHURU DIGITAL SOLUTION</h1><p>CONTACT BASE // LOCAL NODE</p></div>
+  </div>
+  <div class="header-tools"><button id="themeToggle" class="theme-toggle" title="Switch theme">◐ IPHONE VIEW</button><div class="status"><span></span> SYSTEM ONLINE</div></div>
+</header>
+
+<main>
+<section class="hero">
+  <div>
+    <p class="eyebrow">CONTACT MANAGEMENT TERMINAL</p>
+    <h2>STORE. ORGANIZE. EXPORT.</h2>
+  </div>
+  <div class="counter"><strong id="total">0</strong><small>CONTACTS</small></div>
+</section>
+
+<section class="panel">
+  <div class="panel-title">[ ADD CONTACT ]</div>
+  <div class="form-grid contact-form">
+    <input id="business" placeholder="BUSINESS NAME" autocomplete="off">
+    <input id="address" placeholder="BUSINESS ADDRESS / PLACE" autocomplete="off">
+    <input id="phone" placeholder="CONTACT NUMBER / WHATSAPP" autocomplete="off">
+    <input id="website" placeholder="WEBSITE LINK (OPTIONAL)" type="url" autocomplete="url">
+    <button id="addBtn">+ SAVE CONTACT</button>
+  </div>
+  <div class="bulk">
+    <label for="bulkInput">BULK SAVE // Keep one ADDRESS / PLACE above. Paste a DIFFERENT BUSINESS NAME and NUMBER on each line using: Business Name, 0812345678</label>
+    <textarea id="bulkInput" placeholder="ABC SPAR, 0812345678&#10;JOHN'S BUTCHERY, 0721234567&#10;MAMA'S KITCHEN, 0839876543"></textarea>
+    <div class="bulk-actions"><button id="bulkBtn">SAVE BULK CONTACTS</button><button id="dedupeBtn" type="button">SKIP / REMOVE DUPLICATES</button></div>
+  </div>
+</section>
+
+<section class="panel nav-panel">
+  <div class="view-tabs" id="viewTabs">
+    <button data-view="all" class="active">ALL CONTACTS</button>
+    <button data-view="places">BY PLACE</button>
+    <button data-view="recall">CALL AGAIN</button>
+    <button data-view="leads">LEADS / RETURN</button>
+  </div>
+</section>
+
+<section class="panel">
+  <div class="toolbar">
+    <input id="search" placeholder="SEARCH NAME, ADDRESS OR NUMBER..." autocomplete="off">
+    <button id="csvBtn">EXPORT CSV</button>
+    <button id="vcfBtn">EXPORT VCF</button>
+    <label class="filebtn">IMPORT CSV <input id="csvFile" type="file" accept=".csv,text/csv"></label>
+    <label class="filebtn">IMPORT CONTACTS <input id="contactFile" type="file" accept=".vcf,.vcard,text/vcard,text/x-vcard"></label>
+    <button id="backupBtn">BACKUP JSON</button>
+    <label class="filebtn">RESTORE JSON <input id="jsonFile" type="file" accept=".json,application/json"></label>
+    <button id="clearBtn" class="danger">CLEAR ALL</button>
+  </div>
+</section>
+
+<section class="panel">
+  <div class="table-head"><span>NO.</span><span>BUSINESS NAME</span><span>ADDRESS / PLACE</span><span>CONTACT NUMBER / WEBSITE</span><span>CALL STATUS / NOTES</span><span>ACTION</span></div>
+  <div id="viewTitle" class="view-title">ALL CONTACTS</div>
+  <div id="contacts"></div>
+  <div id="empty" class="empty">NO CONTACTS IN LOCAL MEMORY.</div>
+</section>
+</main>
+
+<footer>UHURU DIGITAL SOLUTION CONTACT BASE // V1.0 // OFFLINE-FIRST</footer>
+<script src="app.js"></script>
+</body>
+</html>
