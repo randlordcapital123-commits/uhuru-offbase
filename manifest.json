@@ -1,0 +1,9 @@
+{
+  "name": "Uhuru Digital Solution Contact Base",
+  "short_name": "Uhuru Contact Base",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#0b0d12",
+  "theme_color": "#0b0d12",
+  "description": "Offline-first contact management and sales pipeline for Uhuru Digital Solution."
+}

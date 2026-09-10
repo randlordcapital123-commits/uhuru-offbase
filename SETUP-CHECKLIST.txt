@@ -1,0 +1,152 @@
+═══════════════════════════════════════════════════════════════════════════════
+  🚀 UHURU DIGITAL CONTACT BASE — SETUP CHECKLIST
+═══════════════════════════════════════════════════════════════════════════════
+
+Follow this checklist step-by-step. Check off each item as you complete it.
+
+───────────────────────────────────────────────────────────────────────────────
+PART 1: GET YOUR SUPABASE CREDENTIALS (2 minutes)
+───────────────────────────────────────────────────────────────────────────────
+
+☐ Open https://app.supabase.com in your browser
+☐ Sign in to your account
+☐ Click on your project name
+☐ In the left sidebar, click "Settings" (⚙️ icon)
+☐ Click the "API" tab
+☐ Copy your "Project URL" (looks like: https://abcdef123.supabase.co)
+  - Paste it somewhere safe (notepad, etc.)
+☐ Copy the "anon public" key (long string starting with eyJhbGc...)
+  - ⚠️ DO NOT copy "service_role" — that's for servers only!
+  - Paste it somewhere safe
+
+You should now have TWO values saved somewhere.
+
+───────────────────────────────────────────────────────────────────────────────
+PART 2: ADD CREDENTIALS TO app.js
+───────────────────────────────────────────────────────────────────────────────
+
+OPTION A: Use CONFIG-HELPER.html (Easiest — no file editing)
+───────────────────────────────────────────────────────────────────────────────
+☐ In this folder, double-click "CONFIG-HELPER.html"
+☐ Paste your Project URL into the first field
+☐ Paste your Anon Key into the second field
+☐ Click "Generate Code"
+☐ Click "Copy to Clipboard"
+☐ In Notepad (or VS Code), open app.js
+☐ Find lines 12–13 (starts with: const SUPABASE_URL = ...)
+☐ Paste the copied code over those 2 lines
+☐ Save app.js (Ctrl+S)
+☐ Go to PART 3
+
+OPTION B: Manual Edit (Direct approach)
+───────────────────────────────────────────────────────────────────────────────
+☐ Open app.js in a text editor (Notepad, VS Code, etc.)
+☐ Go to line 12 (use Ctrl+G in most editors)
+☐ Find these lines:
+   const SUPABASE_URL = "https://YOUR-PROJECT-REF.supabase.co";
+   const SUPABASE_ANON_KEY = "YOUR-ANON-PUBLIC-KEY";
+☐ Replace the URL with your Project URL from Supabase
+  Example: const SUPABASE_URL = "https://abcdef123.supabase.co";
+☐ Replace the KEY with your Anon Key from Supabase
+  Example: const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...";
+☐ Save the file (Ctrl+S)
+☐ Go to PART 3
+
+───────────────────────────────────────────────────────────────────────────────
+PART 3: PUSH TO GITHUB PAGES
+───────────────────────────────────────────────────────────────────────────────
+
+☐ Open Terminal / Command Prompt
+☐ Navigate to your GitHub repository folder:
+  cd path/to/your/repo
+☐ Stage the updated app.js:
+  git add app.js
+☐ Commit with a message:
+  git commit -m "Add Supabase credentials - enable dashboard"
+☐ Push to GitHub:
+  git push origin main
+  (If your branch is different, use that instead of "main")
+☐ Wait 1–2 minutes for GitHub Pages to deploy
+☐ Go to PART 4
+
+───────────────────────────────────────────────────────────────────────────────
+PART 4: VERIFY IT WORKS
+───────────────────────────────────────────────────────────────────────────────
+
+☐ Refresh your site in the browser (Ctrl+Shift+R for hard refresh)
+☐ Wait 3–5 seconds for the page to fully load
+☐ Check if you see ANY red error messages
+  - If NO error: ✅ Your credentials are correct! Skip to PART 5
+  - If YES error: ❌ Check your credentials again. Go back to PART 2
+☐ Click the "Dashboard" tab
+☐ Verify you can see:
+  - A big number in the top-left (total contacts)
+  - Stat cards with numbers
+  - Charts and breakdowns
+☐ Go to PART 5
+
+───────────────────────────────────────────────────────────────────────────────
+PART 5: TEST SAVING A NUMBER
+───────────────────────────────────────────────────────────────────────────────
+
+☐ In the "Add Contact" form, fill in:
+  - Business name: Test Business
+  - Address / place: Test Address
+  - Contact number: 0821234567
+☐ Click "Save Contact"
+☐ Wait 2–3 seconds
+☐ Refresh the page
+☐ Click "Dashboard"
+☐ Verify the total contacts count changed to 1
+  - ✅ If yes: Everything is working! Go to PART 6
+  - ❌ If no: Your database isn't saving. Check Supabase project exists & table created
+☐ Go to PART 6
+
+───────────────────────────────────────────────────────────────────────────────
+PART 6: CLEAN UP
+───────────────────────────────────────────────────────────────────────────────
+
+☐ (Optional) Delete the test contact by clicking the trash icon
+☐ (Optional) Delete CONFIG-HELPER.html from your repo (you don't need it anymore)
+  - git rm CONFIG-HELPER.html
+  - git commit -m "Remove config helper"
+  - git push origin main
+
+───────────────────────────────────────────────────────────────────────────────
+✅ ALL DONE!
+───────────────────────────────────────────────────────────────────────────────
+
+Your dashboard is now LIVE and synced to Supabase!
+
+You can now:
+✨ Add contacts and see them saved
+✨ View the dashboard with stats and charts
+✨ Track money (quoted vs paid)
+✨ Manage your sales pipeline
+✨ Access your data from any device
+✨ Export/import in CSV, VCF, or JSON
+
+═══════════════════════════════════════════════════════════════════════════════
+
+TROUBLESHOOTING:
+
+❌ "Database error: Supabase is not configured"
+→ Your credentials are missing or wrong. Go back to PART 2 and double-check.
+
+❌ "GitHub Pages shows 404"
+→ Your branch might be wrong. Go to GitHub Settings → Pages and check which
+  branch is deployed. Usually it's "main" or "gh-pages".
+
+❌ "Page loaded but dashboard is blank"
+→ Wait 5 more seconds. Sometimes Supabase takes a moment to connect.
+
+❌ "Contacts save but don't appear after refresh"
+→ Check your Supabase project still exists and has a "contacts" table.
+  You might need to run supabase-schema.sql again (see SUPABASE-SETUP.md).
+
+═══════════════════════════════════════════════════════════════════════════════
+Need help? Check these files:
+- QUICK-START.md (fast overview)
+- FIXES-APPLIED.md (what was fixed)
+- SUPABASE-SETUP.md (detailed Supabase walkthrough)
+═══════════════════════════════════════════════════════════════════════════════
