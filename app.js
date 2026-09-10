@@ -38,6 +38,26 @@ function money(n) {
   return "R " + n.toLocaleString("en-ZA");
 }
 
+function showDbError(err) {
+  console.error("Supabase error:", err);
+  let banner = document.getElementById("dbErrorBanner");
+  if (!banner) {
+    banner = document.createElement("div");
+    banner.id = "dbErrorBanner";
+    banner.style.cssText =
+      "position:sticky;top:0;z-index:9999;background:#b91c1c;color:#fff;" +
+      "padding:10px 16px;font:14px/1.4 system-ui,sans-serif;white-space:pre-wrap";
+    document.body.prepend(banner);
+  }
+  const msg = (err && (err.message || err.error_description || err.hint || err.details)) || String(err);
+  const code = err && err.code ? ` [code: ${err.code}]` : "";
+  banner.textContent = "Database error" + code + ": " + msg;
+}
+function clearDbError() {
+  const banner = document.getElementById("dbErrorBanner");
+  if (banner) banner.remove();
+}
+
 function openDB() {
   return new Promise((resolve, reject) => {
     if (!supabase) {
@@ -59,9 +79,12 @@ async function all() {
 }
 
 async function put(c) {
-  const { data, error } = await supabase.from(TABLE).insert(c).select("id").single();
+  // Insert-only: we don't need the row back (the app re-fetches via refresh()).
+  // Not chaining .select() here means this only needs INSERT permission, not
+  // SELECT-after-insert — avoids failures if your RLS policies ever get split
+  // into separate per-action rules instead of one "for all" policy.
+  const { error } = await supabase.from(TABLE).insert(c);
   if (error) throw error;
-  return data.id;
 }
 
 async function update(c) {
@@ -112,7 +135,13 @@ function daysAgo(v) {
 }
 
 async function refresh() {
-  contacts = await all();
+  try {
+    contacts = await all();
+  } catch (err) {
+    showDbError(err);
+    return;
+  }
+  clearDbError();
   contacts.sort((a, b) => (Number(a.number) || Number(a.id)) - (Number(b.number) || Number(b.id)));
   let changed = false;
   contacts.forEach((c, i) => {
@@ -122,7 +151,13 @@ async function refresh() {
     const s = statusOf(c);
     if (c.status !== s) { c.status = s; changed = true; }
   });
-  if (changed) { for (const c of contacts) await update(c); }
+  if (changed) {
+    try {
+      for (const c of contacts) await update(c);
+    } catch (err) {
+      showDbError(err);
+    }
+  }
   render();
 }
 
@@ -287,11 +322,9 @@ function computeAnalytics(list) {
   const collectionRate = quoted > 0 ? Math.round(revenue / quoted * 100) : 0;
 
   // Projections (rule-based)
-  // Assume continuing same call volume & conversion
   const projectedCallsMonth = Math.round(avgCallsPerDay * 30);
   const projectedDealsMonth = calledN > 0 ? Math.round(projectedCallsMonth * (counts.live / Math.max(calledN, 1))) : 0;
   const projectedRevenueMonth = Math.round(projectedDealsMonth * (avgDeal || avgPaid || 0));
-  // Pipeline conversion: assume 40% of pipeline closes in 30 days if avg deal known
   const pipelineCloseEst = Math.round(pipelineValue * 0.4);
   const monthOutlook = projectedRevenueMonth + pipelineCloseEst;
 
@@ -310,7 +343,6 @@ function advisorInsights(A) {
   const alerts = [];
   const projections = [];
 
-  // Alerts
   if (A.total === 0) {
     tips.push({ type: "tip", title: "Start your list", body: "Add your first 20 businesses in one area. Focus is faster than scattering." });
     return { tips, alerts, projections };
@@ -331,7 +363,6 @@ function advisorInsights(A) {
     alerts.push({ type: "alert", title: "No calls this week", body: "Zero calls logged in the last 7 days. Consistency beats intensity — aim for a small daily target." });
   }
 
-  // Performance tips from data
   if (A.callRate < 40 && A.total >= 10) {
     tips.push({ type: "tip", title: "Raise call coverage", body: `Only ${A.callRate}% of contacts have been called. Target 60%+ before expanding into new areas.` });
   }
@@ -372,13 +403,11 @@ function advisorInsights(A) {
     tips.push({ type: "tip", title: "Call on more days", body: `Only ${A.daysWithCalls} of the last 14 days had calls. Spread activity across the week for better owner reach.` });
   }
 
-  // Default tips if few generated
   if (tips.length < 2) {
     tips.push({ type: "tip", title: "Morning block", body: "Call 10 new businesses before 10am — owners are more available early." });
     tips.push({ type: "tip", title: "Pipeline discipline", body: "Agreed → Building → Go Live. Always attach the live URL and paid amount so the dashboard stays accurate." });
   }
 
-  // Projections
   if (A.total > 0) {
     projections.push({
       type: "proj",
@@ -629,7 +658,12 @@ async function add(b, a, p, website = "", silentDuplicate = false, extra = {}) {
     ...extra
   };
   if (!rec.siteUrl && rec.status === "live") rec.siteUrl = site;
-  await put(rec);
+  try {
+    await put(rec);
+  } catch (err) {
+    showDbError(err);
+    return false;
+  }
   await refresh();
   return true;
 }
@@ -957,7 +991,7 @@ document.querySelectorAll("#viewTabs button").forEach(btn => {
   };
 });
 
-openDB().then(refresh).catch(err => alert("Database error: " + err.message));
+openDB().then(refresh).catch(err => showDbError(err));
 
 const THEME_KEY = "UhuruContactBaseTheme";
 function applyTheme(theme) {
