@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#0b0d12">
+<link rel="manifest" href="manifest.json">
+<link rel="stylesheet" href="style.css">
+<title>Uhuru Digital Solution — Contact Base</title>
+</head>
+<body>
+<header>
+  <div class="brand">
+    <div class="logo">UDS</div>
+    <div>
+      <h1>UHURU DIGITAL SOLUTION</h1>
+      <p>Contact Base · Sales Pipeline</p>
+    </div>
+  </div>
+  <div class="header-tools">
+    <button id="themeToggle" class="theme-toggle" type="button">Light View</button>
+    <div class="status"><span></span> Cloud (Supabase)</div>
+  </div>
+</header>
+
+<main>
+<section class="hero">
+  <div>
+    <p class="eyebrow">Website Sales Terminal</p>
+    <h2>Call. Close. Build.</h2>
+  </div>
+  <div class="counter"><strong id="total">0</strong><small>Contacts</small></div>
+</section>
+
+<section class="panel">
+  <div class="panel-title">Add Contact</div>
+  <div class="form-grid contact-form">
+    <input id="business" placeholder="Business name" autocomplete="off">
+    <input id="address" placeholder="Address / place" autocomplete="off">
+    <input id="phone" placeholder="Contact number / WhatsApp" autocomplete="off">
+    <input id="website" placeholder="Their website (optional)" type="url" autocomplete="url">
+    <input id="price" placeholder="Quote price (R) — optional" inputmode="numeric" autocomplete="off">
+    <button id="addBtn" type="button">Save Contact</button>
+  </div>
+  <div class="bulk">
+    <label for="bulkInput">Bulk save — keep one Address / Place above. Paste a different business name and number on each line: Business Name, 0812345678</label>
+    <textarea id="bulkInput" placeholder="ABC Spar, 0812345678&#10;John's Butchery, 0721234567&#10;Mama's Kitchen, 0839876543"></textarea>
+    <div class="bulk-actions">
+      <button id="bulkBtn" type="button">Save Bulk Contacts</button>
+      <button id="dedupeBtn" type="button">Remove Duplicates</button>
+    </div>
+  </div>
+</section>
+
+<section class="panel nav-panel">
+  <div class="view-tabs" id="viewTabs">
+    <button data-view="all" class="active" type="button">All Contacts</button>
+    <button data-view="places" type="button">By Place</button>
+    <button data-view="recall" type="button">Call Again</button>
+    <button data-view="leads" type="button">Leads / Return</button>
+    <button data-view="followups" type="button">Follow-ups</button>
+    <button data-view="sites" type="button">Live Sites</button>
+    <button data-view="dashboard" type="button">Dashboard</button>
+  </div>
+</section>
+
+<section class="panel">
+  <div class="toolbar">
+    <input id="search" placeholder="Search name, address or number…" autocomplete="off">
+    <button id="csvBtn" type="button">Export CSV</button>
+    <button id="vcfBtn" type="button">Export VCF</button>
+    <label class="filebtn">Import CSV <input id="csvFile" type="file" accept=".csv,text/csv"></label>
+    <label class="filebtn">Import Contacts <input id="contactFile" type="file" accept=".vcf,.vcard,text/vcard,text/x-vcard"></label>
+    <button id="backupBtn" type="button">Backup JSON</button>
+    <label class="filebtn">Restore JSON <input id="jsonFile" type="file" accept=".json,application/json"></label>
+    <button id="clearBtn" class="danger" type="button">Clear All</button>
+  </div>
+</section>
+
+<section class="panel table-panel">
+  <div class="table-head">
+    <span>No.</span>
+    <span>Business Name</span>
+    <span>Address / Place</span>
+    <span>Contact Number</span>
+    <span>Status / Notes / Site</span>
+    <span>Actions</span>
+  </div>
+  <div id="viewTitle" class="view-title">All Contacts</div>
+  <div id="contacts"></div>
+  <div id="empty" class="empty">No contacts yet.</div>
+</section>
+</main>
+
+<footer>Uhuru Digital Solution Contact Base · V2.0 · Powered by Supabase</footer>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
